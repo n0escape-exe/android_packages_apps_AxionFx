@@ -33,11 +33,39 @@ using aidl::android::hardware::audio::effect::AxionFxContext;
 using aidl::android::hardware::audio::effect::AxionFxEffect;
 using aidl::android::hardware::audio::effect::DefaultExtension;
 using aidl::android::hardware::audio::effect::Descriptor;
-using aidl::android::hardware::audio::effect::getEffectImplUuidAxionFx;
-using aidl::android::hardware::audio::effect::getEffectTypeUuidAxionFx;
 using aidl::android::hardware::audio::effect::IEffect;
 using aidl::android::hardware::audio::effect::VendorExtension;
 using aidl::android::media::audio::common::AudioUuid;
+
+namespace aidl::android::hardware::audio::effect {
+
+// Same UUIDs as legacy/AxionFxLegacy.cpp (kAxionFxTypeUuid / kAxionFxImplUuid).
+// There is no platform-provided declaration for a vendor effect's UUIDs
+// (that only exists for AOSP's built-in effects), so AxionFx defines its own here.
+static inline const AudioUuid& getEffectTypeUuidAxionFx() {
+    static const AudioUuid uuid = {
+            0x5867be72,
+            0x4060,
+            0x4c55,
+            0xa378,
+            {0xc1, 0xcd, 0xef, 0x3e, 0x13, 0x53}};
+    return uuid;
+}
+
+static inline const AudioUuid& getEffectImplUuidAxionFx() {
+    static const AudioUuid uuid = {
+            static_cast<int32_t>(0xf35cb927),
+            0xa887,
+            0x4f3d,
+            0x847f,
+            {0x77, 0x06, 0x34, 0x48, 0x6d, 0x53}};
+    return uuid;
+}
+
+}  // namespace aidl::android::hardware::audio::effect
+
+using aidl::android::hardware::audio::effect::getEffectImplUuidAxionFx;
+using aidl::android::hardware::audio::effect::getEffectTypeUuidAxionFx;
 
 extern "C" binder_exception_t createEffect(const AudioUuid* in_impl_uuid,
                                            std::shared_ptr<IEffect>* instanceSpp) {
